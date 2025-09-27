@@ -1,0 +1,9 @@
+{
+    "name": "LiHuiCreateMod",
+    "version_number": "1.2.0",
+    "website_url": "https://github.com/iccth/HouseofLegacyBepInExMods",
+    "description": "自定义新诞生成员外观生成。Customize the appearance generation range for new NPCs.",
+    "dependencies": [
+        "BepInEx-BepInExPack-5.4.2100"
+    ]
+}
