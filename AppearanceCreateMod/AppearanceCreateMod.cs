@@ -35,18 +35,18 @@ namespace AppearanceCreateMod
             Log = Logger;
 
             // 初始化配置
-            femaleBackHairOptions = Config.Bind("自定义NPC外观生成 (Customize Appearance)", "女性后发(female Back Hair)", "0 1 2 7 11 13 16 18", "自定义女性后发ID列表，用空格分隔。");
+            femaleBackHairOptions = Config.Bind("自定义NPC外观生成 (Customize Appearance)", "女性后发(female Back Hair)", "0 1 2 7 11 13 16 18 19", "自定义女性后发ID列表，用空格分隔。");
             femaleBodyOptions = Config.Bind("自定义NPC外观生成 (Customize Appearance)", "女性身体(female Body)", "0 1 4 5 6 7 8 9 10 11 12 13 14 15 18 19 21 22 23 27 28 30 31 32 33 34 35 36 37 38 39 40 41 46 47", "自定义女性身体ID列表，用空格分隔。");
-            femaleFaceOptions = Config.Bind("自定义NPC外观生成 (Customize Appearance)", "女性脸型(female Face)", "2", "自定义女性脸型ID列表，用空格分隔。");
-            femaleFrontHairOptions = Config.Bind("自定义NPC外观生成 (Customize Appearance)", "女性前发(female Front Hair)", "0 5 12 16", "自定义女性前发ID列表，用空格分隔。");
-            femalePersonalitysOptions = Config.Bind("自定义NPC外观生成 (Customize Appearance)", "女性品性(female Eyes)", "1 2 3 4 5 6 7 8 9 10 11 12 13 14", "自定义女性品性(眼睛)列表，用空格分隔。\n1-骄傲 2-刚正 3-活泼 4-善良 5-真诚 6-洒脱 7-高冷 8-自卑 9-怯懦 10-腼腆 11-凶狠 12-善变 13-忧郁 14-多疑\n1-Proud 2-Righteous 3-Lively 4-Kind 5-Honest 6-Carefree 7-Cold 8-Insecure 9-Timid 10-Shy 11-Mean 12-Fickle 13-Gloomy 14-Paranoid");
+            femaleFaceOptions = Config.Bind("自定义NPC外观生成 (Customize Appearance)", "女性脸型(female Face)", "0 2", "自定义女性脸型ID列表，用空格分隔。");
+            femaleFrontHairOptions = Config.Bind("自定义NPC外观生成 (Customize Appearance)", "女性前发(female Front Hair)", "0 5 7 12 16", "自定义女性前发ID列表，用空格分隔。");
+            femalePersonalitysOptions = Config.Bind("自定义NPC外观生成 (Customize Appearance)", "女性品性(female Eyes)", "1 2 3 4 5 6 9 11 12 14", "自定义女性品性(眼睛)列表，用空格分隔。\n1-骄傲 2-刚正 3-活泼 4-善良 5-真诚 6-洒脱 7-高冷 8-自卑 9-怯懦 10-腼腆 11-凶狠 12-善变 13-忧郁 14-多疑\n1-Proud 2-Righteous 3-Lively 4-Kind 5-Honest 6-Carefree 7-Cold 8-Insecure 9-Timid 10-Shy 11-Mean 12-Fickle 13-Gloomy 14-Paranoid");
 
-            maleBackHairOptions = Config.Bind("自定义NPC外观生成 (Customize Appearance)", "男性后发(male Back Hair)", "1 2 3 7 9 12 14 17", "自定义男性后发ID列表，用空格分隔。");
-            maleBodyOptions = Config.Bind("自定义NPC外观生成 (Customize Appearance)", "男性身体(male Body)", "0 1 2 3 5 6 7 8 12 13 17 18 19 20 21 22 23 24 25 26 27 28 29", "自定义男性身体ID列表，用空格分隔。");
+            maleBackHairOptions = Config.Bind("自定义NPC外观生成 (Customize Appearance)", "男性后发(male Back Hair)", "1 2 3 7 8 9 12 14 17 18", "自定义男性后发ID列表，用空格分隔。");
+            maleBodyOptions = Config.Bind("自定义NPC外观生成 (Customize Appearance)", "男性身体(male Body)", "0 1 2 3 5 6 7 8 12 13 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 40 41 45 46 47", "自定义男性身体ID列表，用空格分隔。");
             maleFaceOptions = Config.Bind("自定义NPC外观生成 (Customize Appearance)", "男性脸型(male Face)", "0 1 2", "自定义男性脸型ID列表，用空格分隔。");
-            maleFrontHairOptions = Config.Bind("自定义NPC外观生成 (Customize Appearance)", "男性前发(male Front Hair)", "6 7 12 13 14 16 17 18 19", "自定义男性前发ID列表，用空格分隔。");
+            maleFrontHairOptions = Config.Bind("自定义NPC外观生成 (Customize Appearance)", "男性前发(male Front Hair)", "6 7 11 12 13 14 16 17 18 19", "自定义男性前发ID列表，用空格分隔。");
             // malePersonalitysOptions = Config.Bind("自定义NPC外观生成 (Customize Appearance)", "品性(Personalitys)", "骄傲 刚正 活泼 善良 真诚 洒脱 高冷 自卑 怯懦 腼腆 凶狠 善变 忧郁 多疑", "自定义男性品性列表，用空格分隔。");
-            malePersonalitysOptions = Config.Bind("自定义NPC外观生成 (Customize Appearance)", "男性品性(male Eyes)", "1 2 3 4 5 6 7 8 9 10 11 12 13 14", "自定义男性品性(眼睛)列表，用空格分隔。\n1-骄傲 2-刚正 3-活泼 4-善良 5-真诚 6-洒脱 7-高冷 8-自卑 9-怯懦 10-腼腆 11-凶狠 12-善变 13-忧郁 14-多疑\n1-Proud 2-Righteous 3-Lively 4-Kind 5-Honest 6-Carefree 7-Cold 8-Insecure 9-Timid 10-Shy 11-Mean 12-Fickle 13-Gloomy 14-Paranoid");
+            malePersonalitysOptions = Config.Bind("自定义NPC外观生成 (Customize Appearance)", "男性品性(male Eyes)", "1 2 4 5 6 7 11 12 14", "自定义男性品性(眼睛)列表，用空格分隔。\n1-骄傲 2-刚正 3-活泼 4-善良 5-真诚 6-洒脱 7-高冷 8-自卑 9-怯懦 10-腼腆 11-凶狠 12-善变 13-忧郁 14-多疑\n1-Proud 2-Righteous 3-Lively 4-Kind 5-Honest 6-Carefree 7-Cold 8-Insecure 9-Timid 10-Shy 11-Mean 12-Fickle 13-Gloomy 14-Paranoid");
 
             enableNewMemberOtherOption = Config.Bind<bool>("自定义NPC外观生成 (Customize Appearance)", "是否对其他世家新诞生角色生效 (Enable customize appearance for other families)", true, "启用后，其他世家的新生成员外观也将根据自定义外观列表生成");
             enableNewMemberOtherDebug = Config.Bind<bool>("自定义NPC外观生成 (Customize Appearance)", "是否在控制台输出其他世家新NPC信息 (Enable new member information log in console for other families)", false, "启用后，在控制台显示其他世家新成员数据信息（非常频繁，建议关闭）");
