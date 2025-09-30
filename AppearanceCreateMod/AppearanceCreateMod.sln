@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35931.197 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppearanceCreateMod", "AppearanceCreateMod.csproj", "{0F56DB03-B2C6-4C09-94C2-18C1342195DA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0F56DB03-B2C6-4C09-94C2-18C1342195DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F56DB03-B2C6-4C09-94C2-18C1342195DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F56DB03-B2C6-4C09-94C2-18C1342195DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F56DB03-B2C6-4C09-94C2-18C1342195DA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7309CA50-28BE-4E64-8426-3F2971A9AF0B}
+	EndGlobalSection
+EndGlobal

@@ -220,13 +220,13 @@ namespace AppearanceCreateMod
                 if (shijiaIndex < 0 || shijiaIndex >= Mainload.Member_other.Count) return;
 
                 // Mainload.Member_other类型是List<List<List<string>>>
-                
+
                 // 检查该世家是否有成员
                 if (Mainload.Member_other[shijiaIndex].Count == 0) return;
 
                 // 获取该世家最后一个成员的索引
                 int lastMemberIndex = Mainload.Member_other[shijiaIndex].Count - 1;
-                
+
                 // 正确获取新成员数据
                 List<string> newMemberData = Mainload.Member_other[shijiaIndex][lastMemberIndex];
 
@@ -240,7 +240,7 @@ namespace AppearanceCreateMod
                 string personality = GeneratePersonality(sex);
 
                 if (newLiHui != null && personality != null)
-                    {
+                {
                     // 替换旧的立绘ID组合字符串 (根据New_MemberOther方法源码，立绘在newMemberData索引1<第2个字符串>)
                     newMemberData[1] = newLiHui;
 
@@ -249,8 +249,8 @@ namespace AppearanceCreateMod
                     string combinedInfo = newMemberData[2];
                     string[] infoArray = combinedInfo.Split('|');
                     infoArray[8] = personality;
-                    newMemberData[2] = string.Join("|", infoArray); 
-                    
+                    newMemberData[2] = string.Join("|", infoArray);
+
                     // 将修改后的数据写回
                     Mainload.Member_other[shijiaIndex][lastMemberIndex] = newMemberData;
                     if (enableNewMemberOtherDebug.Value)
