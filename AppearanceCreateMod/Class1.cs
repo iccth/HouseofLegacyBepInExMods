@@ -268,5 +268,57 @@ namespace AppearanceCreateMod
             }
         }
 
+
+        //修改郡城人员面板寒门立绘
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(FormulaData), "MemberHanMenAdd", new Type[] { typeof(string), typeof(string), typeof(string), typeof(string), typeof(string) })]
+        public static void New_MemberOther_Postfix(string SexID)
+        {
+            if (!enableNewMemberOtherOption.Value) return;
+            try
+            {
+                // Mainload.Member_Hanmen 类型是List<List<string>>
+
+                // 获取最新寒门人员的索引
+                int lastHanMenIndex = Mainload.Member_Hanmen.Count - 1;
+
+                // 正确获取寒门人员数据
+                List<string> newHanMenData = Mainload.Member_Hanmen[lastHanMenIndex];
+
+                // 获取性别ID
+                int sex = int.Parse(SexID);
+
+                string newLiHui = GenerateCustomLiHui(sex);
+
+                string personality = GeneratePersonality(sex);
+
+                if (newLiHui != null && personality != null)
+                {
+                    // 替换旧的立绘ID组合字符串 (根据MemberHanMenAdd方法源码，立绘在newHanMenData索引1<第2个字符串>)
+                    newHanMenData[1] = newLiHui;
+
+                    // 替换旧的品性ID (根据MemberHanMenAdd方法源码，品性ID（text3）在newHanMenData索引2.8<第3个字符串第9个分割值>)
+                    // 获取包含品性的字符串
+                    string combinedInfo = newHanMenData[2];
+                    string[] infoArray = combinedInfo.Split('|');
+                    infoArray[8] = personality;
+                    newHanMenData[2] = string.Join("|", infoArray);
+
+                    // 将修改后的数据写回
+                    Mainload.Member_Hanmen[lastHanMenIndex] = newHanMenData;
+                    if (enableNewMemberOtherDebug.Value)
+                    {
+                        Log.LogInfo($"【生成郡城寒门人员】");
+                        Log.LogInfo($"根据性别ID\"{sex}\"从自定义外观配置中生成随机立绘组合: \"{newLiHui}\" （后发|身体|脸型|前发）");
+                        Log.LogInfo($"生成随机品性ID: \"{personality}\"");
+                        Log.LogInfo($"该成员替换外观后的数据字符串为: \"{string.Join("|", newHanMenData)}\"");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.LogError($"处理Member_Hanmen后置补丁时发生错误: {ex.Message}\n堆栈跟踪: {ex.StackTrace}");
+            }
+        }
     }
 }
