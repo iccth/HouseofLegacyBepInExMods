@@ -53,7 +53,7 @@ namespace AppearanceCreateMod
             enableNewMemberOtherOption = Config.Bind<bool>("自定义NPC外观生成 (Customize Appearance)", "是否对其他世家新诞生角色生效 (Enable customize appearance for other families)", true, "启用后，其他世家的新生成员外观也将根据自定义外观列表生成");
             enableNewMemberOtherDebug = Config.Bind<bool>("自定义NPC外观生成 (Customize Appearance)", "是否在控制台输出其他世家新NPC信息 (Enable new member information log in console for other families)", false, "启用后，在控制台显示其他世家新成员数据信息（非常频繁，建议关闭）");
             enableNewMemberHanMenOption = Config.Bind<bool>("自定义NPC外观生成 (Customize Appearance)", "是否对郡城寒门子弟生效 (Enable customize appearance for people in city)", true, "启用后，郡城寒门子弟外观也将根据自定义外观列表生成");
-            enableNewMemberHanMenDebug = Config.Bind<bool>("自定义NPC外观生成 (Customize Appearance)", "是否在控制台输出郡城寒门子弟信息 (Enable new member information log in console for people in city)", false, "启用后，在控制台显示郡城寒门子弟数据信息（非常频繁，建议关闭）");
+            enableNewMemberHanMenDebug = Config.Bind<bool>("自定义NPC外观生成 (Customize Appearance)", "是否在控制台输出郡城寒门新NPC信息 (Enable new member information log in console for people in city)", true, "启用后，在控制台显示郡城寒门子弟数据信息（非常频繁，建议关闭）");
 
             Harmony.CreateAndPatchAll(typeof(AppearanceCreateMod));
             Log.LogInfo("自定义立绘模组加载成功！");
@@ -259,7 +259,7 @@ namespace AppearanceCreateMod
                     Mainload.Member_other[shijiaIndex][lastMemberIndex] = newMemberData;
                     if (enableNewMemberOtherDebug.Value)
                     {
-                        Log.LogInfo($"【检测到世家新成员生成】");
+                        Log.LogInfo($"【其他世家出现新成员】");
                         Log.LogInfo($"根据性别ID\"{sex}\"从自定义外观配置中生成随机立绘组合: \"{newLiHui}\" （后发|身体|脸型|前发）");
                         Log.LogInfo($"生成随机品性ID: \"{personality}\"");
                         Log.LogInfo($"该成员替换外观后的数据字符串为: \"{string.Join("|", newMemberData)}\"");
@@ -273,107 +273,70 @@ namespace AppearanceCreateMod
         }
 
 
-        ////修改郡城人员面板寒门子弟立绘
-        //[HarmonyPostfix]
-        //[HarmonyPatch(typeof(FormulaData), "MemberHanMenAdd", new Type[] { typeof(string), typeof(string), typeof(string), typeof(string), typeof(string) })]
-        //public static void HanMenMemberAdd_Postfix(string SexID)
-        //{
-        //	Log.LogInfo($"检测到郡城寒门子弟添加，当前寒门子弟总数: {Mainload.Member_Hanmen.Count}");
-        //	if (!enableNewMemberHanMenOption.Value) return;
-        //          try
-        //          {
-        //              // Mainload.Member_Hanmen 类型是List<List<string>>
-
-        //              // 最新寒门子弟索引
-        //              int lastHanMenIndex = Mainload.Member_Hanmen.Count - 1;
-
-        //              // 正确获取寒门子弟数据
-        //              List<string> newMemberData = Mainload.Member_Hanmen[lastHanMenIndex];
-
-        //              // 获取性别ID
-        //              int sex = int.Parse(SexID);
-
-        //              string newLiHui = GenerateCustomLiHui(sex);
-
-        //              string personality = GeneratePersonality(sex);
-
-        //              if (newLiHui != null && personality != null)
-        //              {
-        //                  // 替换旧的立绘ID组合字符串 (根据MemberHanMenAdd方法源码，立绘在newMemberData索引1<第2个字符串>)
-        //                  newMemberData[1] = newLiHui;
-
-        //                  // 替换旧的品性ID (根据MemberHanMenAdd方法源码，品性ID（text3）在newMemberData索引2.8<第3个字符串第9个分割值>)
-        //                  // 获取包含品性的字符串
-        //                  string combinedInfo = newMemberData[2];
-        //                  string[] infoArray = combinedInfo.Split('|');
-        //                  infoArray[8] = personality;
-        //                  newMemberData[2] = string.Join("|", infoArray);
-
-        //                  // 将修改后的数据写回
-        //                  Mainload.Member_Hanmen[lastHanMenIndex] = newMemberData;
-        //                  if (enableNewMemberHanMenDebug.Value)
-        //                  {
-        //                      Log.LogInfo($"【郡城寒门子弟（可招募人员）生成】");
-        //                      Log.LogInfo($"根据性别ID\"{sex}\"从自定义外观配置中生成随机立绘组合: \"{newLiHui}\" （后发|身体|脸型|前发）");
-        //                      Log.LogInfo($"生成随机品性ID: \"{personality}\"");
-        //                      Log.LogInfo($"该成员替换外观后的数据字符串为: \"{string.Join("|", newMemberData)}\"");
-        //                  }
-        //              }
-        //          }
-        //          catch (Exception ex)
-        //          {
-        //              Log.LogError($"处理Member_Hanmen后置补丁时发生错误: {ex.Message}\n堆栈跟踪: {ex.StackTrace}");
-        //          }
-        //      }
-
         //修改郡城人员面板寒门子弟立绘
         [HarmonyPostfix]
-        [HarmonyPatch(typeof(FormulaData), "CreatHanMenMemberData", new Type[] { typeof(string), typeof(string), typeof(int) })]
-        public static void CreatHanMenMemberData_Postfix(string SexID, ref List<string> __result)
-		{
-            //Log.LogInfo("检测到郡城寒门子弟生成");
-            if (!enableNewMemberHanMenOption.Value) return;
+        [HarmonyPatch(typeof(FormulaData), "MemberHanMenAdd", new Type[] { typeof(string), typeof(string), typeof(string), typeof(string), typeof(string) })]
+        public static void HanMenMemberAdd_Postfix(string SexID)
+        {
+            Log.LogInfo($"检测到郡城寒门子弟添加，当前寒门子弟总数: {Mainload.Member_Hanmen.Count}");
             try
             {
-				if (__result == null || __result.Count < 3) return;
+                List<List<string>> hanMenList = Mainload.Member_Hanmen;
 
-				// 正确获取寒门子弟数据
-				List<string> newMemberData = __result;
+                // 寒门子弟被添加到 Mainload.Member_Hanmen 列表的末尾
+                int newMemberIndex = hanMenList.Count - 1;
 
-                // 获取性别ID
-                int sex = int.Parse(SexID);
+                List<string> newMemberData = hanMenList[newMemberIndex];
 
-                string newLiHui = GenerateCustomLiHui(sex);
-
-                string personality = GeneratePersonality(sex);
-
-                if (newLiHui != null && personality != null)
+                if (!int.TryParse(SexID, out int sex))
                 {
-                    // 替换旧的立绘ID组合字符串 (根据CreatHanMenMemberData方法源码，立绘在newMemberData索引1<第2个字符串>)
-                    newMemberData[1] = newLiHui;
+                    Log.LogWarning($"寒门子弟性别ID ({SexID}) 无效，默认为男性 (1)。");
+                    sex = 1;
+                }
 
-                    // 替换旧的品性ID (根据CreatHanMenMemberData方法源码，品性ID（text3）在newMemberData索引2.8<第3个字符串第9个分割值>)
-                    // 获取包含品性的字符串
-                    string combinedInfo = newMemberData[2];
-                    string[] infoArray = combinedInfo.Split('|');
-                    infoArray[8] = personality;
-                    newMemberData[2] = string.Join("|", infoArray);
+                string customLiHui = GenerateCustomLiHui(sex);
+                string customPersonality = GeneratePersonality(sex);
 
-					// 将修改后的数据写回
-					__result = newMemberData;
-                    if (enableNewMemberHanMenDebug.Value)
+                if (customLiHui != null && customPersonality != null)
+                {
+                    // 1. 替换立绘ID (索引 1)
+                    if (newMemberData.Count > 1)
                     {
-                        Log.LogInfo($"【检测到郡城寒门子弟生成】");
-                        Log.LogInfo($"根据性别ID\"{sex}\"从自定义外观配置中生成随机立绘组合: \"{newLiHui}\" （后发|身体|脸型|前发）");
-                        Log.LogInfo($"生成随机品性ID: \"{personality}\"");
-                        Log.LogInfo($"该成员替换外观后的数据字符串为: \"{string.Join("|", newMemberData)}\"");
+                        newMemberData[1] = customLiHui;
                     }
+
+                    // 2. 替换品性ID (索引 2 的分割字符串中的索引 8)
+                    const int requiredInfoLength = 9;
+                    if (newMemberData.Count > 2)
+                    {
+                        string infoData = newMemberData[2];
+                        string[] infoArray = infoData.Split('|');
+
+                        if (infoArray.Length >= requiredInfoLength)
+                        {
+                            // infoArray 是 PinXing ID
+                            infoArray[8] = customPersonality;
+
+                            // 重新组合并更新数据列表
+                            newMemberData[2] = string.Join("|", infoArray);
+                        }
+                        else
+                        {
+                            Log.LogWarning($"寒门子弟的属性数据 (Index 2) 长度不足，无法修改品性。长度: {infoArray.Length}");
+                        }
+                    }
+                    else
+                    {
+                        Log.LogWarning($"寒门子弟的数据长度不足，无法修改立绘和品性。长度: {newMemberData.Count}");
+                    }
+
+                    Log.LogInfo($"【寒门子弟/可招募人员出现】 生成立绘: {customLiHui}, 品性: {customPersonality}");
                 }
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                Log.LogError($"处理Member_Hanmen后置补丁时发生错误: {ex.Message}\n堆栈跟踪: {ex.StackTrace}");
+                Log.LogError($"处理MemberHanMenAdd后置补丁时发生错误: {exception.Message}\n堆栈跟踪: {exception.StackTrace}");
             }
         }
-	}
+    }
 }
