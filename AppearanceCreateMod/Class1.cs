@@ -27,11 +27,14 @@ namespace AppearanceCreateMod
         private static ConfigEntry<string> maleFaceOptions;
         private static ConfigEntry<string> maleFrontHairOptions;
         private static ConfigEntry<string> malePersonalitysOptions;
+        private static ConfigEntry<bool> enableNewMemberNowRoyalOutfits;
 
         private static ConfigEntry<bool> enableNewMemberOtherOption;
         private static ConfigEntry<bool> enableNewMemberOtherDebug;
+        private static ConfigEntry<bool> enableNewMemberOtherRoyalOutfits;
         private static ConfigEntry<bool> enableNewMemberHanMenOption;
         private static ConfigEntry<bool> enableNewMemberHanMenDebug;
+        private static ConfigEntry<bool> enableNewMemberHanMenRoyalOutfits;
         void Awake()
         {
             Log = Logger;
@@ -50,17 +53,21 @@ namespace AppearanceCreateMod
             // malePersonalitysOptions = Config.Bind("自定义NPC外观生成 (Customize Appearance)", "品性(Personalitys)", "骄傲 刚正 活泼 善良 真诚 洒脱 高冷 自卑 怯懦 腼腆 凶狠 善变 忧郁 多疑", "自定义男性品性列表，用空格分隔。");
             malePersonalitysOptions = Config.Bind("自定义NPC外观生成 (Customize Appearance)", "男性品性(male Eyes)", "1 2 4 5 6 7 11 12 14", "自定义男性品性(眼睛)列表，用空格分隔。\n1-骄傲 2-刚正 3-活泼 4-善良 5-真诚 6-洒脱 7-高冷 8-自卑 9-怯懦 10-腼腆 11-凶狠 12-善变 13-忧郁 14-多疑\n1-Proud 2-Righteous 3-Lively 4-Kind 5-Honest 6-Carefree 7-Cold 8-Insecure 9-Timid 10-Shy 11-Mean 12-Fickle 13-Gloomy 14-Paranoid");
 
-            enableNewMemberOtherOption = Config.Bind<bool>("自定义NPC外观生成 (Customize Appearance)", "是否对其他世家新诞生角色生效 (Enable customize appearance for other families)", true, "启用后，其他世家的新生成员外观也将根据自定义外观列表生成");
-            enableNewMemberOtherDebug = Config.Bind<bool>("自定义NPC外观生成 (Customize Appearance)", "是否在控制台输出其他世家新NPC信息 (Enable new member information log in console for other families)", false, "启用后，在控制台显示其他世家新成员数据信息（非常频繁，建议关闭）");
-            enableNewMemberHanMenOption = Config.Bind<bool>("自定义NPC外观生成 (Customize Appearance)", "是否对郡城寒门子弟生效 (Enable customize appearance for people in city)", true, "启用后，郡城寒门子弟外观也将根据自定义外观列表生成");
-            enableNewMemberHanMenDebug = Config.Bind<bool>("自定义NPC外观生成 (Customize Appearance)", "是否在控制台输出郡城寒门子弟信息 (Enable new member information log in console for people in city)", false, "启用后，在控制台显示郡城寒门子弟数据信息（非常频繁，建议关闭）");
+            enableNewMemberNowRoyalOutfits = Config.Bind<bool>("自定义NPC外观生成 (Customize Appearance)", "是否在启用本家族子女生成皇室服装 (Enable royal outfits for new member in other clan)", true, "关闭后，即便自定义身体ID列表包含30到49之间的皇室服装ID，本家族新成员也不会生成皇室服装");
+
+            enableNewMemberOtherOption = Config.Bind<bool>("自定义NPC外观生成 (Customize Appearance)", "是否对其他世家新诞生角色生效 (Enable customize appearance for other clan)", true, "启用后，其他世家的新生成员外观也将根据自定义外观列表生成");
+            enableNewMemberOtherDebug = Config.Bind<bool>("自定义NPC外观生成 (Customize Appearance)", "是否在控制台输出其他世家新NPC信息 (Enable new member information log in console for other clan)", false, "启用后，在控制台显示其他世家新成员数据信息（非常频繁，建议关闭）");
+            enableNewMemberOtherRoyalOutfits = Config.Bind<bool>("自定义NPC外观生成 (Customize Appearance)", "是否在启用其他世家子女生成皇室服装 (Enable royal outfits for new member in other clan)", true, "关闭后，即便自定义身体ID列表包含30到49之间的皇室服装ID，其他世家新成员也不会生成皇室服装");
+            enableNewMemberHanMenOption = Config.Bind<bool>("自定义NPC外观生成 (Customize Appearance)", "是否对郡城寒门子弟生效 (Enable customize appearance for civilian)", true, "启用后，郡城寒门子弟外观也将根据自定义外观列表生成");
+            enableNewMemberHanMenDebug = Config.Bind<bool>("自定义NPC外观生成 (Customize Appearance)", "是否在控制台输出郡城寒门子弟信息 (Enable new member information log in console for civilian)", false, "启用后，在控制台显示郡城寒门子弟数据信息（非常频繁，建议关闭）");
+            enableNewMemberHanMenRoyalOutfits = Config.Bind<bool>("自定义NPC外观生成 (Customize Appearance)", "是否在启用郡城寒门子弟生成皇室服装 (Enable royal outfits for civilian)", false, "关闭后，即便自定义身体ID列表包含30到49之间的皇室服装ID，郡城寒门子弟也不会生成皇室服装");
 
             Harmony.CreateAndPatchAll(typeof(AppearanceCreateMod));
             Log.LogInfo("自定义立绘模组加载成功！");
         }
 
         // 根据性别和自定义立绘列表生成随机立绘ID组合
-        public static string GenerateCustomLiHui(int sex)
+        public static string GenerateCustomLiHui(int sex,bool enableRoyalOutfits = true)
         {
             string backHairStr, bodyStr, faceStr, frontHairStr;
 
@@ -84,6 +91,10 @@ namespace AppearanceCreateMod
             {
                 int[] backHairOptions = Array.ConvertAll(backHairStr.Split(' '), int.Parse);
                 int[] bodyOptions = Array.ConvertAll(bodyStr.Split(' '), int.Parse);
+                if (!enableRoyalOutfits)
+                {
+                    bodyOptions = bodyOptions.Where(id => id < 30).ToArray();
+                }
                 int[] faceOptions = Array.ConvertAll(faceStr.Split(' '), int.Parse);
                 int[] frontHairOptions = Array.ConvertAll(frontHairStr.Split(' '), int.Parse);
 
@@ -187,7 +198,7 @@ namespace AppearanceCreateMod
                 //int sex = int.Parse(memberInfoArray[14]);
 
                 // 生成新的立绘ID组合字符串
-                string newLiHui = GenerateCustomLiHui(sex);
+                string newLiHui = GenerateCustomLiHui(sex, enableNewMemberNowRoyalOutfits.Value);
 
                 // 生成新的品性ID
                 string personality = GeneratePersonality(sex);
@@ -239,7 +250,7 @@ namespace AppearanceCreateMod
                 string[] fourthMemberInfoArray = fourthMemberInfo.Split('|');
                 int sex = int.Parse(fourthMemberInfoArray[4]);
 
-                string newLiHui = GenerateCustomLiHui(sex);
+                string newLiHui = GenerateCustomLiHui(sex, enableNewMemberOtherRoyalOutfits.Value);
 
                 string personality = GeneratePersonality(sex);
 
@@ -343,7 +354,7 @@ namespace AppearanceCreateMod
                 // 获取性别ID
                 int sex = int.Parse(SexID);
 
-                string newLiHui = GenerateCustomLiHui(sex);
+                string newLiHui = GenerateCustomLiHui(sex, enableNewMemberHanMenRoyalOutfits.Value);
 
                 string personality = GeneratePersonality(sex);
 

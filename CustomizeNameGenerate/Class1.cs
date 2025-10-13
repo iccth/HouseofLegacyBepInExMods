@@ -134,7 +134,7 @@ public class CustomizeNameGenerate : BaseUnityPlugin
     /// </summary>
     private void UpdateRandNameList(List<string> targetList, string configValue, string listName)
     {
-        // 现在使用英文逗号作为分隔符进行分割
+        // 使用英文逗号作为分隔符进行分割
         var entries = configValue.Split(new[] { Separator }, StringSplitOptions.RemoveEmptyEntries)
                                  .Where(s => !string.IsNullOrWhiteSpace(s) && !s.TrimStart().StartsWith("#"))
                                  .ToList();
