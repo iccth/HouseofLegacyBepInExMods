@@ -21,6 +21,7 @@ public class CustomizeNameGenerate : BaseUnityPlugin
         // 1. 定义配置项并载入原版数据作为默认值
         //    使用英文逗号 "," 作为默认值的连接符，以保证在配置文件中格式简洁。
         //    源文件: "Assembly-CSharp.dll.RandName.cs"
+        //    初始化配置中添加游戏原版的姓名加上常见日式和西式风格ACG角色姓名
         // ----------------------------------------------------
 
         // 姓氏配置 (FamilyName)

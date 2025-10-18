@@ -1,0 +1,9 @@
+{
+    "name": "CustomizeNameGenerate",
+    "version_number": "1.0.0",
+    "website_url": "https://github.com/iccth/HouseofLegacyBepInExMods",
+    "description": "自定义姓名生成。Customize name generation.",
+    "dependencies": [
+        "BepInEx-BepInExPack-5.4.2100"
+    ]
+}
